@@ -1,1 +1,3 @@
-export const ADD_CITY = 'ADD_CITY';
+export const ADD_TRACK_CITY = 'ADD_TRACK_CITY';
+export const SET_SEARCH_VALUE = 'SET_SEARCH_VALUE';
+export const SET_SEARCH_RESULTS = 'SET_SEARCH_RESULTS';
