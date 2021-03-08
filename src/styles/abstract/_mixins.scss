@@ -1,0 +1,26 @@
+@mixin font ($size, $height, $weight, $style: normal) {
+  font-size: $size;
+  line-height: $height;
+  font-weight: $weight;
+  font-style: $style;
+}
+
+@mixin size($width, $height: $width) {
+  width: $width;
+  height: $height;
+}
+
+@mixin flex($flex-direction: row, $align-items: center, $justify-content: center) {
+  display: flex;
+  flex-direction: $flex-direction;
+  justify-content: $justify-content;
+  align-items: $align-items;
+}
+
+@mixin media-mobile {
+  @media (max-width: $content-width-mobile) { @content; }
+}
+
+@mixin media-hover {
+  @media (pointer: fine) { @content; }
+}
