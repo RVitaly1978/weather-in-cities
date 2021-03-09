@@ -3,10 +3,37 @@
 .city_card {
   position: relative;
 
-  width: 30rem;
-  padding: 1rem;
+  width: 32rem;
+  min-width: 32rem;
+  height: 25rem;
+  padding: 1.5rem 1rem;
+  margin: 1rem;
+
+  @include flex($flex-direction: column);
+
+  border: $border;
+  border-radius: $radius-border-view;
+  background-color: $color-background-view;
 
   .error {
     width: calc(100% - 2rem);
+    top: 0;
+    transform: translateX(-50%) translateY(-50%);
+  }
+
+  .card_content {
+    flex-grow: 1;
+    width: 100%;
+
+    @include flex($flex-direction: column, $justify-content: flex-start);
+  }
+
+  button {
+    min-width: 14rem;
+  }
+
+  button + button {
+    margin-left: 1rem;
   }
 }
+

@@ -1,0 +1,9 @@
+@import '../../styles/abstract/abstracts';
+
+.cities_container {
+  width: 100%;
+  margin-top: 2rem;
+
+  @include flex();
+  flex-wrap: wrap;
+}

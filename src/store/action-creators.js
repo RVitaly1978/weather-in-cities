@@ -4,7 +4,7 @@ import {
   GEOCODING_FETCHING, GEOCODING_FETCHING_ERROR,
   SET_SEARCH_VALUE, SET_SEARCH_RESULTS,
   SET_CITY_TO_TRACKED_LIST, UPDATE_CITY_WEATHER,
-  // WEATHER_FETCHING, WEATHER_FETCHING_ERROR,
+  DELETE_CITY_FROM_LIST,
 } from './actions';
 
 // action creators ---------------------------
@@ -35,20 +35,15 @@ export const setCityToTrackedList = (id) => ({
   payload: { id },
 });
 
+export const deleteCityFromList = (id) => ({
+  type: DELETE_CITY_FROM_LIST,
+  payload: { id },
+});
+
 export const updateCityWeather = (city) => ({
   type: UPDATE_CITY_WEATHER,
   payload: { city },
 });
-
-// export const setWeatherFetching = (id, isWeatherFetching) => ({
-//   type: WEATHER_FETCHING,
-//   payload: { id, isWeatherFetching },
-// });
-
-// export const setWeatherFetchingError = (id, weatherFetchingError) => ({
-//   type: WEATHER_FETCHING_ERROR,
-//   payload: { id, weatherFetchingError },
-// });
 
 // thunk creators --------------------------------
 
@@ -78,6 +73,46 @@ export const addCity = (id) => {
     try {
       const weather = await getWeather(city.center);
       const updated = {
+        ...city,
+        weather: {
+          ...weather,
+          isWeatherFetching: false,
+          weatherFetchingError: null,
+        },
+      };
+      dispatch(updateCityWeather(updated));
+    } catch (e) {
+      const updated = {
+        ...city,
+        weather: {
+          ...city.weather,
+          isWeatherFetching: false,
+          weatherFetchingError: e.message,
+        },
+      };
+      dispatch(updateCityWeather(updated));
+    }
+  }
+};
+
+export const updateCity = (id) => {
+  return async (dispatch, getState) => {
+    const { cities } = getState();
+    const city = cities.find((city) => city.id === id );
+
+    let updated = {
+      ...city,
+      weather: {
+        ...city.weather,
+        isWeatherFetching: true,
+        weatherFetchingError: null,
+      },
+    };
+    dispatch(updateCityWeather(updated));
+
+    try {
+      const weather = await getWeather(city.center);
+      updated = {
         ...city,
         weather: {
           ...weather,

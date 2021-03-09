@@ -8,7 +8,10 @@ import './app.scss';
 export const App = () => {
   return (
     <div className='app'>
-      <SearchInput />
+      <div className='app_controls'>
+        <SearchInput />
+      </div>
+
       <CitiesList />
 
     </div>

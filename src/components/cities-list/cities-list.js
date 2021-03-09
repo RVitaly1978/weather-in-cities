@@ -1,40 +1,35 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { deleteCityFromList, updateCity } from '../../store/action-creators';
 
 import { CityCard } from '../city-card/city-card';
 
-// import {
-//   setGeocodingFetchingError, setSearchResults, citiesSearch, addCity,
-// } from '../../store/action-creators';
+import './cities-list.scss';
 
 export const CitiesList = () => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const cities = useSelector(s => s.cities);
-  // const isLoading = useSelector(s => s.isGeocodingFetching);
-  // const error = useSelector(s => s.geocodingFetchingError);
 
-  // const handleInputChange = (value) => {
-  //   error && dispatch(setGeocodingFetchingError(null));
+  const handleDelete = (id) => {
+    dispatch(deleteCityFromList(id));
+  };
 
-  //   const search = value.trim();
-  //   if (search && search.length >= 3) {
-  //     dispatch(citiesSearch(search));
-  //   }
-  // }
-
-  // const handleChange = (select) => {
-  //   if (select) {
-  //     dispatch(addCity(select.value));
-  //     dispatch(setSearchResults([]));
-  //   }
-  // }
+  const handleUpdate = (id) => {
+    dispatch(updateCity(id));
+  };
 
   const list = cities.map(({ id, text, weather }) => {
-    return <CityCard key={id} city={text} weather={weather} />;
+    return <CityCard key={id}
+      id={id}
+      city={text}
+      weather={weather}
+      onDelete={handleDelete}
+      onUpdate={handleUpdate} />;
   });
 
   return (
-    <div>
+    <div className='cities_container'>
       {list}
     </div>
   );

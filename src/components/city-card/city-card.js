@@ -4,46 +4,39 @@ import { ErrorMessage } from '../error-message/error-message';
 
 import './city-card.scss';
 
-export const CityCard = ({ city, weather }) => {
-  if (weather.weatherFetchingError) {
-    return (
-      <div className='city_card'>
-        <h2>{`Город: ${city}`}</h2>
-
-        <ErrorMessage error={weather.weatherFetchingError} />
-      </div>
-    );
-  }
-
-  if (weather.isWeatherFetching) {
-    return (
-      <div>
-        <h2>{`Город: ${city}`}</h2>
-        <p>Loading...</p>
-      </div>
-    );
-  }
-
-  const { temperature, humidity, pressure, windSpeed } = weather;
+export const CityCard = ({ id, city, weather, onUpdate, onDelete }) => {
+  const { isWeatherFetching, weatherFetchingError } = weather;
 
   return (
-    <div>
-      <h2>{`Город: ${city}`}</h2>
-      <p>{`Температура: ${temperature}`}</p>
-      <p>{`Влажность: ${humidity}`}</p>
-      <p>{`Давление: ${pressure}`}</p>
-      <p>{`Ветер: ${windSpeed}`}</p>
+    <div className='city_card'>
+      <div className='card_content'>
+        <h2>{`Город: ${city}`}</h2>
+        {weather.temperature && <p>{`Температура: ${weather.temperature}`}</p>}
+        {weather.humidity && <p>{`Влажность: ${weather.humidity}`}</p>}
+        {weather.pressure && <p>{`Давление: ${weather.pressure}`}</p>}
+        {weather.windSpeed && <p>{`Ветер: ${weather.windSpeed}`}</p>}
+        {weather.windDeg && <p>{`Ветер-направление: ${weather.windDeg}`}</p>}
+        {weather.date && <p>{`Дата обновления: ${new Date(weather.date * 1000)}`}</p>}
+      </div>
+
+      <div className='card_buttons'>
+        <button
+          onClick={() => onUpdate(id)}
+          disabled={isWeatherFetching} >
+          {isWeatherFetching ? 'Обновление...' : 'Обновить'}
+        </button>
+
+        <button
+          onClick={() => onDelete(id)}
+          disabled={isWeatherFetching} >
+          {'Удалить'}
+        </button>
+      </div>
+
+      {weatherFetchingError && <ErrorMessage error={weather.weatherFetchingError} />}
     </div>
   );
 };
 
-// cityId: String(id),
-// cityName: name,
-// date: dt,
 // timezone,
-// windSpeed: wind.speed,
-// windDeg: wind.deg,
-// temperature: main.temp,
-// humidity: main.humidity,
-// pressure: main.pressure,
 // feels: main.feels_like,

@@ -3,6 +3,12 @@
 .app {
   width: 100%;
   padding: 1rem;
+
+  @include flex($flex-direction: column);
+}
+
+.app_controls {
+  width: 100%;
 }
 
 // .app_content {

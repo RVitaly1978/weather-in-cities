@@ -2,7 +2,7 @@ import {
   GEOCODING_FETCHING, GEOCODING_FETCHING_ERROR,
   SET_SEARCH_VALUE, SET_SEARCH_RESULTS,
   SET_CITY_TO_TRACKED_LIST, UPDATE_CITY_WEATHER,
-  // WEATHER_FETCHING, WEATHER_FETCHING_ERROR,
+  DELETE_CITY_FROM_LIST,
 } from './actions';
 
 export const initialState = {
@@ -28,6 +28,14 @@ const updateCityInList = (cities, city) => {
   ];
 };
 
+const deleteCityFromList = (cities, id) => {
+  const index = cities.findIndex((city) => city.id === id);
+  return [
+    ...cities.slice(0, index),
+    ...cities.slice(index + 1),
+  ];
+};
+
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
     case GEOCODING_FETCHING:
@@ -38,6 +46,9 @@ export const reducer = (state = initialState, action) => {
 
     case SET_CITY_TO_TRACKED_LIST:
       return { ...state, cities: addCityToTrackedList(state, action.payload.id) };
+
+    case DELETE_CITY_FROM_LIST:
+      return { ...state, cities: deleteCityFromList(state.cities, action.payload.id) };
 
     case UPDATE_CITY_WEATHER:
       return { ...state, cities: updateCityInList(state.cities, action.payload.city) };
