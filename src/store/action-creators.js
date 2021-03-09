@@ -7,6 +7,28 @@ import {
   DELETE_CITY_FROM_LIST,
 } from './actions';
 
+const updateCityData = (city, isLoading, error, weather) => {
+  if (weather) {
+    return {
+      ...city,
+      weather: {
+        ...weather,
+        isWeatherFetching: isLoading,
+        weatherFetchingError: error,
+      },
+    };
+  }
+
+  return {
+    ...city,
+    weather: {
+      ...city.weather,
+      isWeatherFetching: isLoading,
+      weatherFetchingError: error,
+    },
+  };
+};
+
 // action creators ---------------------------
 
 export const setGeocodingFetching = (isGeocodingFetching) => ({
@@ -72,24 +94,10 @@ export const addCity = (id) => {
 
     try {
       const weather = await getWeather(city.center);
-      const updated = {
-        ...city,
-        weather: {
-          ...weather,
-          isWeatherFetching: false,
-          weatherFetchingError: null,
-        },
-      };
+      const updated = updateCityData(city, false, null, weather);
       dispatch(updateCityWeather(updated));
     } catch (e) {
-      const updated = {
-        ...city,
-        weather: {
-          ...city.weather,
-          isWeatherFetching: false,
-          weatherFetchingError: e.message,
-        },
-      };
+      const updated = updateCityData(city, false, e.message);
       dispatch(updateCityWeather(updated));
     }
   }
@@ -100,36 +108,15 @@ export const updateCity = (id) => {
     const { cities } = getState();
     const city = cities.find((city) => city.id === id );
 
-    let updated = {
-      ...city,
-      weather: {
-        ...city.weather,
-        isWeatherFetching: true,
-        weatherFetchingError: null,
-      },
-    };
+    let updated = updateCityData(city, true, null);
     dispatch(updateCityWeather(updated));
 
     try {
       const weather = await getWeather(city.center);
-      updated = {
-        ...city,
-        weather: {
-          ...weather,
-          isWeatherFetching: false,
-          weatherFetchingError: null,
-        },
-      };
+      updated = updateCityData(city, false, null, weather);
       dispatch(updateCityWeather(updated));
     } catch (e) {
-      const updated = {
-        ...city,
-        weather: {
-          ...city.weather,
-          isWeatherFetching: false,
-          weatherFetchingError: e.message,
-        },
-      };
+      const updated = updateCityData(city, false, e.message);
       dispatch(updateCityWeather(updated));
     }
   }

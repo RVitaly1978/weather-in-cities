@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
+import debounce from 'debounce';
 
 import {
   setGeocodingFetchingError, setSearchResults, citiesSearch, addCity,
@@ -40,7 +41,7 @@ export const SearchInput = () => {
         options={options}
         placeholder='Select city...'
         onChange={handleChange}
-        onInputChange={handleInputChange} />
+        onInputChange={debounce(handleInputChange, 500)} />
 
       <ErrorMessage error={error} />
     </div>
