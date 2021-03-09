@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { deleteCityFromList, updateCity } from '../../store/action-creators';
+import { deleteCity, updateCity } from '../../store/action-creators';
 
 import { CityCard } from '../city-card/city-card';
 
@@ -12,7 +12,7 @@ export const CitiesList = () => {
   const cities = useSelector(s => s.cities);
 
   const handleDelete = (id) => {
-    dispatch(deleteCityFromList(id));
+    dispatch(deleteCity(id));
   };
 
   const handleUpdate = (id) => {

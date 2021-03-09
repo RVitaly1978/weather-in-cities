@@ -2,10 +2,12 @@ import {
   GEOCODING_FETCHING, GEOCODING_FETCHING_ERROR,
   SET_SEARCH_VALUE, SET_SEARCH_RESULTS,
   SET_CITY_TO_TRACKED_LIST, UPDATE_CITY_WEATHER,
-  DELETE_CITY_FROM_LIST,
+  DELETE_CITY_FROM_LIST, SET_INITIAL_LOADING,
+  SET_ALL_CITIES_WEATHER,
 } from './actions';
 
 export const initialState = {
+  initialLoading: true,
   isGeocodingFetching: false,
   geocodingFetchingError: null,
   searchValue: '',
@@ -38,10 +40,12 @@ const deleteCityFromList = (cities, id) => {
 
 export const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case SET_INITIAL_LOADING:
     case GEOCODING_FETCHING:
     case GEOCODING_FETCHING_ERROR:
     case SET_SEARCH_VALUE:
     case SET_SEARCH_RESULTS:
+    case SET_ALL_CITIES_WEATHER:
       return { ...state, ...action.payload };
 
     case SET_CITY_TO_TRACKED_LIST:

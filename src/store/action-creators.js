@@ -4,7 +4,8 @@ import {
   GEOCODING_FETCHING, GEOCODING_FETCHING_ERROR,
   SET_SEARCH_VALUE, SET_SEARCH_RESULTS,
   SET_CITY_TO_TRACKED_LIST, UPDATE_CITY_WEATHER,
-  DELETE_CITY_FROM_LIST,
+  DELETE_CITY_FROM_LIST, SET_INITIAL_LOADING,
+  SET_ALL_CITIES_WEATHER,
 } from './actions';
 
 const updateCityData = (city, isLoading, error, weather) => {
@@ -29,7 +30,27 @@ const updateCityData = (city, isLoading, error, weather) => {
   };
 };
 
+const saveToStorage = (getState) => {
+  const { cities } = getState();
+  const data = JSON.stringify(cities);
+  localStorage.setItem('weather-in-cities', data);
+};
+
+const loadFromStorage = () => {
+  const saved = localStorage.getItem('weather-in-cities');
+  if (saved) {
+    return JSON.parse(saved);
+  }
+
+  return [];
+};
+
 // action creators ---------------------------
+
+export const setInitialLoading = (initialLoading) => ({
+  type: SET_INITIAL_LOADING,
+  payload: { initialLoading },
+});
 
 export const setGeocodingFetching = (isGeocodingFetching) => ({
   type: GEOCODING_FETCHING,
@@ -67,10 +88,23 @@ export const updateCityWeather = (city) => ({
   payload: { city },
 });
 
+export const setAllCitiesWeather = (cities) => ({
+  type: SET_ALL_CITIES_WEATHER,
+  payload: { cities },
+});
+
 // thunk creators --------------------------------
 
+export const init = () => {
+  return async (dispatch, getState) => {
+    const cities = loadFromStorage();
+    dispatch(setAllCitiesWeather(cities));
+    dispatch(setInitialLoading(false));
+  }
+};
+
 export const citiesSearch = (search) => {
-  return async (dispatch) => {
+  return async (dispatch, getState) => {
     dispatch(setSearchValue(search));
     dispatch(setGeocodingFetching(true));
 
@@ -82,6 +116,7 @@ export const citiesSearch = (search) => {
       dispatch(setGeocodingFetchingError(e.message));
     } finally {
       dispatch(setGeocodingFetching(false));
+      saveToStorage(getState);
     }
   }
 };
@@ -99,6 +134,8 @@ export const addCity = (id) => {
     } catch (e) {
       const updated = updateCityData(city, false, e.message);
       dispatch(updateCityWeather(updated));
+    } finally {
+      saveToStorage(getState);
     }
   }
 };
@@ -118,6 +155,15 @@ export const updateCity = (id) => {
     } catch (e) {
       const updated = updateCityData(city, false, e.message);
       dispatch(updateCityWeather(updated));
+    } finally {
+      saveToStorage(getState);
     }
+  }
+};
+
+export const deleteCity = (id) => {
+  return async (dispatch, getState) => {
+    dispatch(deleteCityFromList(id));
+    saveToStorage(getState);
   }
 };

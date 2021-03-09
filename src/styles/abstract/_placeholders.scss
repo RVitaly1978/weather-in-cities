@@ -4,6 +4,10 @@
   'Helvetica', sans-serif;
 }
 
+%transition-hidden {
+  transition: all 0.5s ease-in-out;
+}
+
 %transition-hover {
   transition: background-color 0.3s linear, color 0.3s linear, fill 0.3s linear;
 }

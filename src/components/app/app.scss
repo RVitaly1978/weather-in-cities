@@ -5,6 +5,10 @@
   padding: 1rem;
 
   @include flex($flex-direction: column);
+
+  .app_loader {
+    margin-top: 5rem;
+  }
 }
 
 .app_controls {
