@@ -23,6 +23,12 @@ export const getWeather = async ([longitude, latitude]) => {
     return {};
 
   } catch (e) {
-    throw new Error(`Something is wrong with server: ${e.message}.`);
+    if (e.response) {
+      throw new Error(e.response.data.message);
+    } else if (e.request) {
+      throw new Error(e.request);
+    } else {
+      throw new Error(`Error: ${e.message}.`);
+    }
   }
 };
