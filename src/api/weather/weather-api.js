@@ -5,7 +5,7 @@ import { getWeatherResult } from './get-weather-result';
 const URL = 'https://api.openweathermap.org/data/2.5/weather';
 const KEY = process.env.REACT_APP_WEATHER_API_KEY;
 
-export const weather = async ([longitude, latitude]) => {
+export const getWeather = async ([longitude, latitude]) => {
   const params = {
     lat: latitude,
     lon: longitude,

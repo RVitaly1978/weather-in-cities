@@ -1,0 +1,12 @@
+@import '../../styles/abstract/abstracts';
+
+.city_card {
+  position: relative;
+
+  width: 30rem;
+  padding: 1rem;
+
+  .error {
+    width: calc(100% - 2rem);
+  }
+}

@@ -1,8 +1,10 @@
 import { geocoding } from '../api/geocoding/geocoding-api';
+import { getWeather } from '../api/weather/weather-api';
 import {
   GEOCODING_FETCHING, GEOCODING_FETCHING_ERROR,
   SET_SEARCH_VALUE, SET_SEARCH_RESULTS,
-  SET_CITY_TO_TRACKED_LIST, WEATHER_FETCHING, WEATHER_FETCHING_ERROR,
+  SET_CITY_TO_TRACKED_LIST, UPDATE_CITY_WEATHER,
+  // WEATHER_FETCHING, WEATHER_FETCHING_ERROR,
 } from './actions';
 
 // action creators ---------------------------
@@ -33,14 +35,19 @@ export const setCityToTrackedList = (id) => ({
   payload: { id },
 });
 
-// export const setWeatherFetching = (isWeatherFetching) => ({
+export const updateCityWeather = (city) => ({
+  type: UPDATE_CITY_WEATHER,
+  payload: { city },
+});
+
+// export const setWeatherFetching = (id, isWeatherFetching) => ({
 //   type: WEATHER_FETCHING,
-//   payload: { isWeatherFetching },
+//   payload: { id, isWeatherFetching },
 // });
 
-// export const setWeatherFetchingError = (weatherFetchingError) => ({
+// export const setWeatherFetchingError = (id, weatherFetchingError) => ({
 //   type: WEATHER_FETCHING_ERROR,
-//   payload: { weatherFetchingError },
+//   payload: { id, weatherFetchingError },
 // });
 
 // thunk creators --------------------------------
@@ -58,6 +65,37 @@ export const citiesSearch = (search) => {
       dispatch(setGeocodingFetchingError(e.message));
     } finally {
       dispatch(setGeocodingFetching(false));
+    }
+  }
+};
+
+export const addCity = (id) => {
+  return async (dispatch, getState) => {
+    dispatch(setCityToTrackedList(id));
+    const { cities } = getState();
+    const city = cities.find((city) => city.id === id );
+
+    try {
+      const weather = await getWeather(city.center);
+      const updated = {
+        ...city,
+        weather: {
+          ...weather,
+          isWeatherFetching: false,
+          weatherFetchingError: null,
+        },
+      };
+      dispatch(updateCityWeather(updated));
+    } catch (e) {
+      const updated = {
+        ...city,
+        weather: {
+          ...city.weather,
+          isWeatherFetching: false,
+          weatherFetchingError: e.message,
+        },
+      };
+      dispatch(updateCityWeather(updated));
     }
   }
 };

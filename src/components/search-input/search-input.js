@@ -3,8 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
 
 import {
-  setGeocodingFetchingError, setSearchResults, citiesSearch,
-  setCityToTrackedList,
+  setGeocodingFetchingError, setSearchResults, citiesSearch, addCity,
 } from '../../store/action-creators';
 import { ErrorMessage } from '../error-message/error-message';
 
@@ -25,7 +24,7 @@ export const SearchInput = () => {
 
   const handleChange = (select) => {
     if (select) {
-      dispatch(setCityToTrackedList(select.value));
+      dispatch(addCity(select.value));
       dispatch(setSearchResults([]));
     }
   }
