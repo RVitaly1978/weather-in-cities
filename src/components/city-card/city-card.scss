@@ -26,10 +26,31 @@
     width: 100%;
 
     @include flex($flex-direction: column, $justify-content: flex-start);
+
+    p {
+      width: 100%;
+      font-size: 0.95em;
+      line-height: 1.4;
+      text-align: left;
+    }
   }
 
   button {
     min-width: 14rem;
+
+    &:first-child {
+      background-color: rgba(34, 139, 34, 0.692);
+    }
+
+    &:last-child {
+      background-color: rgba(178, 34, 34, 0.705);
+    }
+
+    @include media-hover {
+      &:hover {
+        background-color: $color-link;
+      }
+    }
   }
 
   button + button {

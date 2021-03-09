@@ -41,10 +41,10 @@ h1 {
 
 h2 {
   margin: 0;
-  padding: 0;
+  padding: 1rem 0;
 
   color: inherit;
-  @include font ($size: 2rem, $height: 1.5, $weight: 900);
+  @include font ($size: 2rem, $height: 1, $weight: 900);
   text-align: left;
 
   @include media-mobile {
@@ -84,7 +84,7 @@ a {
   cursor: pointer;
 }
 
-button, a {
+button {
   margin: 0;
   padding: 1rem;
 
