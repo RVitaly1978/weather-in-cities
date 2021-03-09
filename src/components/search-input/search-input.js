@@ -2,16 +2,17 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Select from 'react-select';
 
-import { setGeocodingFetchingError } from '../../store/action-creators/common';
 import {
-  addTrackCity, citiesSearch, setSearchResults,
-} from '../../store/action-creators/main';
+  setGeocodingFetchingError, setSearchResults, citiesSearch,
+  setCityToTrackedList,
+} from '../../store/action-creators';
+import { ErrorMessage } from '../error-message/error-message';
 
 export const SearchInput = () => {
   const dispatch = useDispatch();
-  const searchResults = useSelector(s => s.main.searchResults);
-  const isLoading = useSelector(s => s.common.isGeocodingFetching);
-  const error = useSelector(s => s.common.geocodingFetchingError);
+  const searchResults = useSelector(s => s.searchResults);
+  const isLoading = useSelector(s => s.isGeocodingFetching);
+  const error = useSelector(s => s.geocodingFetchingError);
 
   const handleInputChange = (value) => {
     error && dispatch(setGeocodingFetchingError(null));
@@ -24,7 +25,7 @@ export const SearchInput = () => {
 
   const handleChange = (select) => {
     if (select) {
-      dispatch(addTrackCity(select.value));
+      dispatch(setCityToTrackedList(select.value));
       dispatch(setSearchResults([]));
     }
   }
@@ -41,6 +42,8 @@ export const SearchInput = () => {
         placeholder='Select city...'
         onChange={handleChange}
         onInputChange={handleInputChange} />
+
+      <ErrorMessage error={error} />
     </div>
   );
 };

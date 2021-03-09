@@ -2,6 +2,7 @@
 
 .app {
   width: 100%;
+  padding: 1rem;
 }
 
 // .app_content {
@@ -62,32 +63,3 @@
 //     height: $main-height-surface;
 //   }
 // }
-
-.error {
-  position: absolute;
-  bottom: 1rem;
-  left: 50%;
-
-  width: calc(100% - 1rem);
-  max-width: 30rem;
-  padding: 0.5rem;
-
-  transform: translateX(-50%);
-
-  background-color: $color-background-error;
-  color: $color-text-error;
-
-  box-shadow: $box-shadow-error;
-
-  border-radius: $radius-border-view;
-
-  font-size: inherit;
-
-  user-select: none;
-
-  animation: fadeIn ease 1s;
-  -webkit-animation: fadeIn ease 1s;
-  -moz-animation: fadeIn ease 1s;
-  -o-animation: fadeIn ease 1s;
-  -ms-animation: fadeIn ease 1s;
-}
