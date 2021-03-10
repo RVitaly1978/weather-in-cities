@@ -8,6 +8,8 @@ import {
 } from '../../store/action-creators';
 import { ErrorMessage } from '../error-message/error-message';
 
+import './select-input.scss';
+
 export const SearchInput = () => {
   const dispatch = useDispatch();
   const searchResults = useSelector(s => s.searchResults);
@@ -34,7 +36,7 @@ export const SearchInput = () => {
     .map(({ id, place }) => ({ value: id, label: place }));
 
   return (
-    <div>
+    <div className='input_container'>
       <Select
         isClearable={true}
         isLoading={isLoading}

@@ -1,0 +1,28 @@
+@import '../../styles/abstract/abstracts';
+
+.min_max_city_card {
+  position: relative;
+
+  width: 32rem;
+  min-width: 32rem;
+  padding: 1.5rem 1rem;
+  margin: 1rem;
+
+  @include flex($flex-direction: column);
+
+  border: $border;
+  border-radius: $radius-border-view;
+  background-color: $color-background-view;
+
+  .card_content {
+    flex-grow: 1;
+    width: 100%;
+
+    p {
+      width: 100%;
+      line-height: 1.4;
+      text-align: left;
+    }
+  }
+}
+

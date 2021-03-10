@@ -3,7 +3,8 @@ import {
   SET_SEARCH_VALUE, SET_SEARCH_RESULTS,
   SET_CITY_TO_TRACKED_LIST, UPDATE_CITY_WEATHER,
   DELETE_CITY_FROM_LIST, SET_INITIAL_LOADING,
-  SET_ALL_CITIES_WEATHER,
+  SET_ALL_CITIES_WEATHER, SET_CANCEL_UPDATE,
+  SET_UPDATE_DELAY,
 } from './actions';
 
 export const initialState = {
@@ -13,6 +14,8 @@ export const initialState = {
   searchValue: '',
   searchResults: [],
   cities: [],
+  updateDelay: 600000,
+  cancelUpdate: false,
 };
 
 const addCityToTrackedList = ({ searchResults, cities }, id) => {
@@ -46,6 +49,8 @@ export const reducer = (state = initialState, action) => {
     case SET_SEARCH_VALUE:
     case SET_SEARCH_RESULTS:
     case SET_ALL_CITIES_WEATHER:
+    case SET_CANCEL_UPDATE:
+    case SET_UPDATE_DELAY:
       return { ...state, ...action.payload };
 
     case SET_CITY_TO_TRACKED_LIST:

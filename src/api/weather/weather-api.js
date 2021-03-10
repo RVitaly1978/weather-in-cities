@@ -26,7 +26,7 @@ export const getWeather = async ([longitude, latitude]) => {
     if (e.response) {
       throw new Error(e.response.data.message);
     } else if (e.request) {
-      throw new Error(e.request);
+      throw new Error(e.message);
     } else {
       throw new Error(`Error: ${e.message}.`);
     }

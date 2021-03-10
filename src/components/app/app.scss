@@ -1,8 +1,10 @@
 @import '../../styles/abstract/abstracts';
 
 .app {
+  position: relative;
+
   width: 100%;
-  padding: 1rem;
+  padding: 1rem 0;
 
   @include flex($flex-direction: column);
 
@@ -13,63 +15,6 @@
 
 .app_controls {
   width: 100%;
+
+  @include flex($align-items: stretch);
 }
-
-// .app_content {
-//   position: relative;
-
-//   @include flex($flex-direction: column);
-
-//   width: 100%;
-//   max-width: $content-width-wide;
-//   height: 100vh;
-
-//   margin: 0 auto;
-//   padding: 0.5rem $padding-wide 0.5rem;
-
-//   @extend %animation-fadeIn;
-
-//   @include media-wide {
-//     max-width: unset;
-//     padding-left: $padding-wide;
-//     padding-right: $padding-wide;
-//   }
-
-//   @include media-laptop {
-//     padding-left: $padding-laptop;
-//     padding-right: $padding-laptop;
-//   }
-
-//   @include media-tablet {
-//     padding-left: $padding-tablet;
-//     padding-right: $padding-tablet;
-//   }
-
-//   @include media-landscape {
-//     padding-left: $padding-landscape;
-//     padding-right: $padding-landscape;
-//   }
-
-//   @include media-surface {
-//     padding: 0;
-//   }
-// }
-
-// .app_main {
-//   position: relative;
-
-//   width: 100%;
-//   height: $main-height;
-//   margin-top: 0.5rem;
-
-//   @include flex();
-
-//   @extend %transition-background;
-
-//   border: $border;
-//   border-radius: $radius-border-view;
-
-//   @include media-surface {
-//     height: $main-height-surface;
-//   }
-// }

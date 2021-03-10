@@ -1,6 +1,8 @@
 @import '../../styles/abstract/abstracts';
 
 .bounce_container {
+  display: inline-block;
+
   width: 7.5rem;
 
   @include flex($justify-content: space-between);

@@ -33,6 +33,16 @@
       line-height: 1.4;
       text-align: left;
     }
+
+    h2 {
+      width: 100%;
+      @include flex($justify-content: flex-start);
+    }
+
+    .card_loader {
+      font-size: 0.4em;
+      width: 4.0rem;
+    }
   }
 
   button {

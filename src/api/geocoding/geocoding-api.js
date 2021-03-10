@@ -12,6 +12,7 @@ export const geocoding = async (city) => {
     autocomplete: true,
     types: 'place',
     limit: LIMIT,
+    language: 'ru',
     access_token: KEY,
   };
 
@@ -28,7 +29,7 @@ export const geocoding = async (city) => {
     if (e.response) {
       throw new Error(e.response.data.message);
     } else if (e.request) {
-      throw new Error(e.request);
+      throw new Error(e.message);
     } else {
       throw new Error(`Error: ${e.message}.`);
     }

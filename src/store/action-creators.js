@@ -5,7 +5,8 @@ import {
   SET_SEARCH_VALUE, SET_SEARCH_RESULTS,
   SET_CITY_TO_TRACKED_LIST, UPDATE_CITY_WEATHER,
   DELETE_CITY_FROM_LIST, SET_INITIAL_LOADING,
-  SET_ALL_CITIES_WEATHER,
+  SET_ALL_CITIES_WEATHER, SET_CANCEL_UPDATE,
+  SET_UPDATE_DELAY,
 } from './actions';
 
 const updateCityData = (city, isLoading, error, weather) => {
@@ -93,10 +94,20 @@ export const setAllCitiesWeather = (cities) => ({
   payload: { cities },
 });
 
+export const setCancelUpdate = (cancelUpdate) => ({
+  type: SET_CANCEL_UPDATE,
+  payload: { cancelUpdate },
+});
+
+export const setUpdateDelay = (updateDelay) => ({
+  type: SET_UPDATE_DELAY,
+  payload: { updateDelay },
+});
+
 // thunk creators --------------------------------
 
 export const init = () => {
-  return async (dispatch, getState) => {
+  return (dispatch) => {
     const cities = loadFromStorage();
     dispatch(setAllCitiesWeather(cities));
     dispatch(setInitialLoading(false));
@@ -123,27 +134,28 @@ export const citiesSearch = (search) => {
 
 export const addCity = (id) => {
   return async (dispatch, getState) => {
-    dispatch(setCityToTrackedList(id));
-    const { cities } = getState();
-    const city = cities.find((city) => city.id === id );
+    const candidate = getState().cities.find((city) => city.id === id );
+    if (!candidate) {
+      dispatch(setCityToTrackedList(id));
+      const city = getState().cities.find((city) => city.id === id );
 
-    try {
-      const weather = await getWeather(city.center);
-      const updated = updateCityData(city, false, null, weather);
-      dispatch(updateCityWeather(updated));
-    } catch (e) {
-      const updated = updateCityData(city, false, e.message);
-      dispatch(updateCityWeather(updated));
-    } finally {
-      saveToStorage(getState);
+      try {
+        const weather = await getWeather(city.center);
+        const updated = updateCityData(city, false, null, weather);
+        dispatch(updateCityWeather(updated));
+      } catch (e) {
+        const updated = updateCityData(city, false, e.message);
+        dispatch(updateCityWeather(updated));
+      } finally {
+        saveToStorage(getState);
+      }
     }
   }
 };
 
 export const updateCity = (id) => {
   return async (dispatch, getState) => {
-    const { cities } = getState();
-    const city = cities.find((city) => city.id === id );
+    const city = getState().cities.find((city) => city.id === id );
 
     let updated = updateCityData(city, true, null);
     dispatch(updateCityWeather(updated));
@@ -161,8 +173,32 @@ export const updateCity = (id) => {
   }
 };
 
-export const deleteCity = (id) => {
+export const updateAllCities = () => {
   return async (dispatch, getState) => {
+    const { cities } = getState();
+
+    if (cities.length) {
+      let updated = cities.map((city) => updateCityData(city, true, null));
+      dispatch(setAllCitiesWeather(updated));
+
+      cities.map(async (city) => {
+        try {
+          const weather = await getWeather(city.center);
+          updated = updateCityData(city, false, null, weather);
+          !getState().cancelUpdate && dispatch(updateCityWeather(updated));
+        } catch (e) {
+          const updated = updateCityData(city, false, e.message);
+          !getState().cancelUpdate && dispatch(updateCityWeather(updated));
+        } finally {
+          !getState().cancelUpdate && saveToStorage(getState);
+        }
+      });
+    }
+  }
+};
+
+export const deleteCity = (id) => {
+  return (dispatch, getState) => {
     dispatch(deleteCityFromList(id));
     saveToStorage(getState);
   }
